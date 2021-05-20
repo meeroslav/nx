@@ -34,7 +34,7 @@ jobs:
           - e2e-angular
       fail-fast: false
 
-    name: OS ${{ matrix.os }} Node v${{ matrix.node_version }} (${{ matrix.package_manager }}) - ${{ matrix.packages }}
+    name: ${{ matrix.os }} > Node v${{ matrix.node_version }} (${{ matrix.package_manager }}) - ${{ matrix.packages }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -76,7 +76,7 @@ jobs:
         version: 6.0.2
 
     - name: Run e2e tests
-      run: yarn nx run-many --target=e2e --projects=${{ join(matrix.packages, ',') }}
+      run: yarn nx run-many --target=e2e --projects=${{ join(matrix.packages) }}
       env:
         GIT_AUTHOR_NAME: test@test.com
         GIT_AUTHOR_EMAIL: Test
