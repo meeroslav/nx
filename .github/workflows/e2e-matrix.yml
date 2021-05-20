@@ -38,10 +38,24 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Install dependencies
+    - name: Use Node.js ${{ matrix.node_version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node_version }}
+
+    - name: Yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Cache yarn
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ matrix.os }}-node-${{ matrix.node-version }}-yarn-${{ hashFiles('yarn.lock') }}
+        restore-keys: |
+          ${{ matrix.os }}-node-${{ matrix.node-version }}-yarn-
+          ${{ matrix.os }}-node-${{ matrix.node-version }}-
+
     - run: yarn install
 
     - name: Cleanup
