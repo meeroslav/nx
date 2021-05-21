@@ -94,4 +94,4 @@ jobs:
       if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.debug_enabled && failure() }}
       uses: mxschmitt/action-tmate@v3
       with:
-        sudo: false # disable sudo for windows debugging
+        sudo: ${{ matrix.os != 'windows-latest' }} # disable sudo for windows debugging
