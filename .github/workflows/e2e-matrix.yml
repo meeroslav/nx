@@ -4,8 +4,8 @@ on:
   schedule:
     - cron: "0 0 * * *"
   push:
-    paths:
-      - ".github/workflows/e2e-matrix.yml"
+    branches:
+      - master
 
 jobs:
   e2e:
