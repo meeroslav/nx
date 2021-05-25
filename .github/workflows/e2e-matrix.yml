@@ -88,6 +88,7 @@ jobs:
         NX_E2E_CI_CACHE_KEY: e2e-gha-${{ matrix.node_version }}-${{ matrix.package_manager }}
         NODE_OPTIONS: --max_old_space_size=8192
         SELECTED_PM: ${{ matrix.package_manager }}
+        YARN_REGISTRY: http://localhost:4872
         SELECTED_CLI: ${{ matrix.packages == 'e2e-angular' && 'angular' || 'nx' }}
 
     - name: Setup tmate session
