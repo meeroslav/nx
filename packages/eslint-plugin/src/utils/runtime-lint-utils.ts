@@ -445,7 +445,7 @@ export function groupImports(
  * @param importExpr
  * @returns
  */
-export function isAngularSecondaryEntrypoint(
+export function isSecondaryEntrypoint(
   importExpr: string,
   filePath: string,
   projectRoot: string
@@ -476,5 +476,13 @@ function fileIsSecondaryEntryPoint(file: string, projectRoot: string): boolean {
     }
     parent = joinPathFragments(parent, '../');
   }
+  // look for standard multy-entry-point definition
+  const packageJson = readFileIfExisting(
+    joinPathFragments(projectRoot, 'package.json')
+  );
+  if (packageJson) {
+    const entryPoints = parseJson(packageJson)?.exports;
+  }
+
   return false;
 }

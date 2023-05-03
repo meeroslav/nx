@@ -25,7 +25,7 @@ import {
   hasBuildExecutor,
   hasNoneOfTheseTags,
   isAbsoluteImportIntoAnotherProject,
-  isAngularSecondaryEntrypoint,
+  isSecondaryEntrypoint,
   isDirectDependency,
   matchImportWithWildcard,
   onlyLoadChildren,
@@ -33,7 +33,6 @@ import {
   isComboDepConstraint,
 } from '../utils/runtime-lint-utils';
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import { TargetProjectLocator } from '@nx/js/src/internal';
 import { basename, dirname, relative } from 'path';
 import {
   getBarrelEntryPointByImportScope,
@@ -309,11 +308,7 @@ export default createESLintRule<Options, MessageIds>({
         if (
           !allowCircularSelfDependency &&
           !isRelativePath(imp) &&
-          !isAngularSecondaryEntrypoint(
-            imp,
-            sourceFilePath,
-            sourceProject.data.root
-          )
+          !isSecondaryEntrypoint(imp, sourceFilePath, sourceProject.data.root)
         ) {
           context.report({
             node,

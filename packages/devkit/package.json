@@ -21,6 +21,12 @@
   ],
   "main": "./index",
   "typings": "./index.d.ts",
+  "exports": {
+    "./testing": {
+      "types": "./testing.d.ts",
+      "default": "./testing.js"
+    }
+  },
   "author": "Victor Savkin",
   "license": "MIT",
   "bugs": {

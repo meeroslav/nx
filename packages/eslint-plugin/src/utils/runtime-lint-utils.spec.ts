@@ -11,7 +11,7 @@ import {
   findTransitiveExternalDependencies,
   hasBannedDependencies,
   hasBannedImport,
-  isAngularSecondaryEntrypoint,
+  isSecondaryEntrypoint,
   isTerminalRun,
 } from './runtime-lint-utils';
 import { vol } from 'memfs';
@@ -385,7 +385,7 @@ describe('is terminal run', () => {
   });
 });
 
-describe('isAngularSecondaryEntrypoint', () => {
+describe('isSecondaryEntrypoint', () => {
   beforeEach(() => {
     const tsConfig = {
       compilerOptions: {
@@ -429,44 +429,36 @@ describe('isAngularSecondaryEntrypoint', () => {
     vol.fromJSON(fsJson, '/root');
   });
 
-  it('should return true for secondary entrypoints', () => {
+  it('should return true for Angular secondary entrypoints', () => {
     expect(
-      isAngularSecondaryEntrypoint(
-        '@project/standard',
-        'apps/app.ts',
-        'libs/standard'
-      )
+      isSecondaryEntrypoint('@project/standard', 'apps/app.ts', 'libs/standard')
     ).toBe(false);
     expect(
-      isAngularSecondaryEntrypoint(
+      isSecondaryEntrypoint(
         '@project/standard/secondary',
         'apps/app.ts',
         'libs/standard'
       )
     ).toBe(true);
     expect(
-      isAngularSecondaryEntrypoint(
+      isSecondaryEntrypoint(
         '@project/standard/tertiary',
         'apps/app.ts',
         'libs/standard'
       )
     ).toBe(true);
     expect(
-      isAngularSecondaryEntrypoint(
-        '@project/features',
-        'apps/app.ts',
-        'libs/features'
-      )
+      isSecondaryEntrypoint('@project/features', 'apps/app.ts', 'libs/features')
     ).toBe(false);
     expect(
-      isAngularSecondaryEntrypoint(
+      isSecondaryEntrypoint(
         '@project/features/secondary',
         'apps/app.ts',
         'libs/features'
       )
     ).toBe(true);
     expect(
-      isAngularSecondaryEntrypoint(
+      isSecondaryEntrypoint(
         '@project/buildable',
         'apps/app.ts',
         'libs/buildable'
