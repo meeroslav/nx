@@ -38,6 +38,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: b3d07a82938d06ad940aafd0634625d57fb89de0
 
       - name: Install PNPM
         run: |
@@ -321,6 +323,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: b3d07a82938d06ad940aafd0634625d57fb89de0
 
       - name: Prepare dir for output
         run: mkdir -p outputs
