@@ -77,7 +77,7 @@ jobs:
           - 18
           - 16
         package_manager:
-          - npm
+          - yarn
         project:
           - e2e-angular-core
           - e2e-angular-extensions
