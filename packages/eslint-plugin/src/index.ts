@@ -19,6 +19,10 @@ import dependencyChecks, {
   RULE_NAME as dependencyChecksRuleName,
 } from './rules/dependency-checks';
 
+import projectConfigChecks, {
+  RULE_NAME as projectConfigChecksRuleName,
+} from './rules/project-config-checks';
+
 // Resolve any custom rules that might exist in the current workspace
 import { workspaceRules } from './resolve-workspace-rules';
 
@@ -37,6 +41,7 @@ module.exports = {
     [enforceModuleBoundariesRuleName]: enforceModuleBoundaries,
     [nxPluginChecksRuleName]: nxPluginChecksRule,
     [dependencyChecksRuleName]: dependencyChecks,
+    [projectConfigChecksRuleName]: projectConfigChecks,
     ...workspaceRules,
   },
 };
