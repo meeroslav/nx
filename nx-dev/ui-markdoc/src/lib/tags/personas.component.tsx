@@ -183,6 +183,28 @@ const typeMap: Record<
   },
 };
 
+function personaTypeColor(type: PersonaType): string {
+  if (type === 'angular') {
+    return 'red';
+  }
+  if (type === 'react') {
+    return 'sky';
+  }
+  if (type === 'node') {
+    return 'lime';
+  }
+  if (type === 'lerna') {
+    return 'purple';
+  }
+  if (type === 'javascript') {
+    return 'yellow';
+  }
+  if (type === 'extend') {
+    return 'blue';
+  }
+  return 'slate';
+}
+
 export function Persona({
   title,
   type,
@@ -196,8 +218,12 @@ export function Persona({
 }): JSX.Element {
   const ui = typeMap[type];
 
+  const color = personaTypeColor(type);
+
   return (
-    <aside className="relative flex overflow-hidden rounded-md border border-slate-100 bg-slate-50 p-4 transition hover:bg-slate-50/40 dark:border-slate-800/40 dark:bg-slate-800/60 dark:hover:bg-slate-800">
+    <aside
+      className={`relative flex overflow-hidden rounded-md border border-${color}-100 bg-${color}-50 p-4 transition hover:bg-${color}-50/40 dark:border-${color}-800/40 dark:bg-${color}-800/60 dark:hover:bg-${color}-800`}
+    >
       <div className="flex-shrink-0">{ui.image}</div>
       <div className="ml-4">
         {title && <h5 className="mt-0 text-base font-medium">{title}</h5>}
