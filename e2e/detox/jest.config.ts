@@ -9,6 +9,5 @@ export default {
   globalSetup: '../utils/global-setup.ts',
   globalTeardown: '../utils/global-teardown.ts',
   displayName: 'e2e-detox',
-  testTimeout: 600000,
   preset: '../../jest.preset.js',
 };
