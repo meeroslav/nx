@@ -2806,8 +2806,92 @@ __metadata:
       `);
     });
   });
+
+  describe('patch pruning', () => {
+    const hash = uniq('mock-hash');
+
+    beforeEach(() => {
+      const fileSys = {};
+      vol.fromJSON(fileSys, '/root');
+    });
+
+    it('should parse the patches correctly', () => {
+      const lockFile = require(joinPathFragments(
+        __dirname,
+        '__fixtures__/patches/yarn.lock'
+      )).default;
+      const packageJson = require(joinPathFragments(
+        __dirname,
+        '__fixtures__/patches/package.json'
+      ));
+      const externalNodes = getYarnLockfileNodes(lockFile, hash, packageJson);
+
+      expect(Object.keys(externalNodes).length).toEqual(3150);
+    });
+
+    it('should prune the patches correctly', () => {
+      const lockFile = require(joinPathFragments(
+        __dirname,
+        '__fixtures__/patches/yarn.lock'
+      )).default;
+      const packageJson = require(joinPathFragments(
+        __dirname,
+        '__fixtures__/patches/package.json'
+      ));
+      const appPackageJson = require(joinPathFragments(
+        __dirname,
+        '__fixtures__/patches/app/package.json'
+      ));
+
+      const externalNodes = getYarnLockfileNodes(lockFile, hash, packageJson);
+      const projectGraph = {
+        nodes: {},
+        dependencies: {},
+        externalNodes,
+      };
+      const ctx: CreateDependenciesContext = {
+        projects: {},
+        externalNodes,
+        fileMap: {
+          nonProjectFiles: [],
+          projectFileMap: {},
+        },
+        filesToProcess: {
+          nonProjectFiles: [],
+          projectFileMap: {},
+        },
+        nxJsonConfiguration: null,
+        workspaceRoot: '/virtual',
+      };
+      const dependencies = getYarnLockfileDependencies(lockFile, hash, ctx);
+
+      const builder = new ProjectGraphBuilder(projectGraph);
+      for (const dep of dependencies) {
+        builder.addDependency(
+          dep.source,
+          dep.target,
+          dep.type,
+          'sourceFile' in dep ? dep.sourceFile : null
+        );
+      }
+      const graph = builder.getUpdatedProjectGraph();
+
+      const prunedGraph = pruneProjectGraph(graph, appPackageJson);
+      const result = stringifyYarnLockfile(
+        prunedGraph,
+        lockFile,
+        appPackageJson
+      );
+      expect(result).toEqual(
+        require(joinPathFragments(
+          __dirname,
+          '__fixtures__/patches/app/yarn.lock'
+        )).default
+      );
+    });
+  });
 });
 
 function uniq(str: string) {
-  return `str-${(Math.random() * 10000).toFixed(0)}`;
+  return `${str}-${(Math.random() * 10000).toFixed(0)}`;
 }
